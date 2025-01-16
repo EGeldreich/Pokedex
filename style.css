@@ -1,0 +1,44 @@
+/* RESET */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    border: none;
+}
+/* UTILITIES */
+body {
+    font-family: "Quicksand", serif;
+}
+.row {
+    display: flex;
+}
+.col {
+    display: flex;
+    flex-direction: column;
+}
+.wrap {
+    flex-wrap: wrap;
+}
+/* NAV */
+
+.generation {
+    flex: 1;
+    height: 24px;
+    font-weight: 700;
+    text-transform: uppercase;
+    cursor: pointer;
+
+    &:hover {
+        background-color: brown;
+    }
+}
+
+/* POKEDEX */
+.pokedex {
+    gap: 24px;
+}
+.entry {
+    width: 200px;
+    height: 200px;
+    border: 1px solid black;
+}
