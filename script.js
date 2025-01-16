@@ -4,7 +4,10 @@ const pokedexEl = document.querySelector(".pokedex");
 const entryTemplateEl = document.querySelector("#entry_template");
 
 let pokemonData;
-
+// GENERIC FUNCTIONS
+function capitalizeFirstLetter(val) {
+    return String(val).charAt(0).toUpperCase() + String(val).slice(1);
+}
 // GET POKEMON INFORMATION
 async function getGenerationPokemonInfo(generationUrl) {
     // Fetch generation pokedex
@@ -54,7 +57,7 @@ async function getGenerationPokemonInfo(generationUrl) {
         let img = templateClone.querySelector(".img");
 
         // Input relevant data
-        name.textContent = pokemon.name;
+        name.textContent = capitalizeFirstLetter(pokemon.name);
         id.textContent = pokemon.id;
         type.textContent = pokemon.type;
         img.src = pokemon.src;
