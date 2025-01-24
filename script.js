@@ -37,7 +37,7 @@ async function getGenerationPokemonInfo(generationUrl) {
                     id: formatNumber(data.id),
                     type: data.types[0].type.name,
                     type2: data.types.length > 1 ? data.types[1].type.name : null,
-                    src: data.sprites.front_default,
+                    src: data.sprites.other.showdown.front_default ? data.sprites.other.showdown.front_default : data.sprites.front_default
                 };
 
                 // Push object in array at a determined index
@@ -100,7 +100,7 @@ async function getGenerationPokemonInfo(generationUrl) {
         colorCards.forEach(card => {
             card.querySelector('.type').style.backgroundColor = colors[color].slice(0, -2);
 
-            card.style.backgroundColor = colors[color];
+            card.style.background = `linear-gradient(${colors[color].slice(0, -2)}, #fff)`;
         })
     }
     let secondTypeEl = document.querySelectorAll('.type2');
@@ -113,8 +113,6 @@ async function getGenerationPokemonInfo(generationUrl) {
                 type.style.backgroundColor = colors[color].slice(0, -2);
             }
         }
-
-
     })
 }
 
@@ -127,7 +125,7 @@ async function getGenerationPokedex() {
     data.results.forEach((generation) => {
         // For each generation
         let generationBtn = document.createElement("button"); // Create a btn element
-        generationBtn.textContent = generation.name; // Add the generation name as text in btn
+        generationBtn.textContent = generation.name.replace('generation-', ''); // Add the generation name as text in btn
         generationBtn.classList.add("generation"); // Add the generation class for styling reason
         navEl.appendChild(generationBtn); // Append in to the nav
 
@@ -147,3 +145,4 @@ async function getGenerationPokedex() {
 
 // ON LOAD
 getGenerationPokedex();
+getGenerationPokemonInfo("https://pokeapi.co/api/v2/generation/1");
