@@ -2,6 +2,28 @@
 const navEl = document.querySelector(".nav");
 const pokedexEl = document.querySelector(".pokedex");
 const entryTemplateEl = document.querySelector("#entry_template");
+const modalTemplateEl = document.querySelector("#modal_template");
+
+let colors = {
+    normal: '#A8A77A80',
+    fire: '#EE813080',
+    water: '#6390F080',
+    electric: '#F7D02C80',
+    grass: '#7AC74C80',
+    ice: '#96D9D680',
+    fighting: '#C22E2880',
+    poison: '#A33EA180',
+    ground: '#E2BF6580',
+    flying: '#A98FF380',
+    psychic: '#F9558780',
+    bug: '#A6B91A80',
+    rock: '#B6A13680',
+    ghost: '#73579780',
+    dragon: '#6F35FC80',
+    dark: '#70574680',
+    steel: '#B7B7CE80',
+    fairy: '#D685AD80',
+};
 
 let pokemonData;
 // GENERIC FUNCTIONS
@@ -37,7 +59,11 @@ async function getGenerationPokemonInfo(generationUrl) {
                     id: formatNumber(data.id),
                     type: data.types[0].type.name,
                     type2: data.types.length > 1 ? data.types[1].type.name : null,
-                    src: data.sprites.other.showdown.front_default ? data.sprites.other.showdown.front_default : data.sprites.front_default
+                    src: data.sprites.other.showdown.front_default ? data.sprites.other.showdown.front_default : data.sprites.front_default,
+                    abilities: data.abilities,
+                    height: data.height,
+                    weight: data.weight,
+                    stats: data.stats,
                 };
 
                 // Push object in array at a determined index
@@ -53,18 +79,13 @@ async function getGenerationPokemonInfo(generationUrl) {
         let templateClone = document.importNode(entryTemplateEl.content, true);
         // Select template elements
         let entry = templateClone.querySelector(".entry");
-        let name = templateClone.querySelector(".name");
-        let id = templateClone.querySelector(".id");
-        let type = templateClone.querySelector(".type");
-        let type2 = templateClone.querySelector(".type2");
-        let img = templateClone.querySelector(".img");
-
+        
         // Input relevant data
-        name.textContent = capitalizeFirstLetter(pokemon.name);
-        id.textContent = pokemon.id;
-        type.textContent = pokemon.type;
-        type2.textContent = pokemon.type2;
-        img.src = pokemon.src;
+        templateClone.querySelector(".name").textContent = capitalizeFirstLetter(pokemon.name);
+        templateClone.querySelector(".id").textContent = pokemon.id;
+        templateClone.querySelector(".type").textContent = pokemon.type;
+        templateClone.querySelector(".type2").textContent = pokemon.type2;
+        templateClone.querySelector(".img").src = pokemon.src;
 
         // Add relevant classes
         entry.classList.add(pokemon.type);
@@ -72,28 +93,8 @@ async function getGenerationPokemonInfo(generationUrl) {
         pokedexEl.appendChild(templateClone);
 
     });
-    // HANDLE COLORS
-    let colors = {
-        normal: '#A8A77A80',
-        fire: '#EE813080',
-        water: '#6390F080',
-        electric: '#F7D02C80',
-        grass: '#7AC74C80',
-        ice: '#96D9D680',
-        fighting: '#C22E2880',
-        poison: '#A33EA180',
-        ground: '#E2BF6580',
-        flying: '#A98FF380',
-        psychic: '#F9558780',
-        bug: '#A6B91A80',
-        rock: '#B6A13680',
-        ghost: '#73579780',
-        dragon: '#6F35FC80',
-        dark: '#70574680',
-        steel: '#B7B7CE80',
-        fairy: '#D685AD80',
-    };
 
+    // HANDLE COLORS FOR BASE CARDS
     for(color in colors) {
         let colorCards = document.querySelectorAll(`.${color}`);
         
@@ -109,7 +110,6 @@ async function getGenerationPokemonInfo(generationUrl) {
     let typeTxt = type.textContent;
         for(color in colors){
             if(color == typeTxt){
-                console.log('salut');
                 type.style.backgroundColor = colors[color].slice(0, -2);
             }
         }
@@ -125,7 +125,7 @@ async function getGenerationPokedex() {
     data.results.forEach((generation) => {
         // For each generation
         let generationBtn = document.createElement("button"); // Create a btn element
-        generationBtn.textContent = generation.name.replace('generation-', ''); // Add the generation name as text in btn
+        generationBtn.textContent = generation.name.replace('eration', ''); // Add the generation name as text in btn
         generationBtn.classList.add("generation"); // Add the generation class for styling reason
         navEl.appendChild(generationBtn); // Append in to the nav
 
@@ -146,3 +146,4 @@ async function getGenerationPokedex() {
 // ON LOAD
 getGenerationPokedex();
 getGenerationPokemonInfo("https://pokeapi.co/api/v2/generation/1");
+
